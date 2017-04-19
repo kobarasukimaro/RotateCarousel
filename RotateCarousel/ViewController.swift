@@ -8,17 +8,18 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     let carouselView1_1 = UIView()
     let carouselView1_2 = UIView()
+    let carouselTable = CarouselTableView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // カルーセルテスト
         carouselView1_1.translatesAutoresizingMaskIntoConstraints = false
-        carouselView1_1.isHidden = false
+        carouselView1_1.isHidden = true
         carouselView1_1.tag = 1000
         carouselView1_1.backgroundColor = UIColor.green
         carouselView1_1.layer.cornerRadius = 15.0
@@ -30,7 +31,7 @@ class ViewController: UIViewController {
         carouselView1_1.heightAnchor.constraint(equalToConstant: self.view.frame.height * 0.1).isActive = true
         
         carouselView1_2.translatesAutoresizingMaskIntoConstraints = false
-        carouselView1_2.isHidden = false
+        carouselView1_2.isHidden = true
         carouselView1_2.tag = 1001
         carouselView1_2.backgroundColor = UIColor.brown
         carouselView1_2.layer.cornerRadius = 15.0
@@ -40,6 +41,74 @@ class ViewController: UIViewController {
         carouselView1_2.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
         carouselView1_2.widthAnchor.constraint(equalToConstant: self.view.frame.width * 0.2).isActive = true
         carouselView1_2.heightAnchor.constraint(equalToConstant: self.view.frame.height * 0.1).isActive = true
+        
+        carouselTable.delegate = self
+        carouselTable.dataSource = self
+        carouselTable.translatesAutoresizingMaskIntoConstraints = false
+        carouselTable.tag = 2001
+        carouselTable.register(CarouselTableViewCell.self, forCellReuseIdentifier: NSStringFromClass(CarouselTableViewCell.self))
+        // carouselTable.contentInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        let transform = CGAffineTransform(rotationAngle: CGFloat(-M_PI / 2.0))
+        carouselTable.transform = transform
+        self.view.addSubview(carouselTable)
+        carouselTable.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        carouselTable.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
+        carouselTable.widthAnchor.constraint(equalToConstant: self.view.frame.width * 0.3).isActive = true
+        carouselTable.heightAnchor.constraint(equalToConstant: self.view.frame.height * 0.3).isActive = true
+    }
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 3 * 4
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 20 // セルの上部のスペース
+    }
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 20 // セルの下部のスペース
+    }
+    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        view.tintColor = UIColor.clear // 透明にすることでスペースとする
+    }
+    func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
+        view.tintColor = UIColor.clear // 透明にすることでスペースとする
+    }
+    
+    // セル追加
+    func tableView(_ cellForRowAttableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        
+        let cell: UITableViewCell = cellForRowAttableView.dequeueReusableCell(withIdentifier: NSStringFromClass(CarouselTableViewCell.self))!
+        cell.layer.cornerRadius = 15.0
+        cell.backgroundColor = UIColor.gray
+        cell.textLabel?.text = String(describing: indexPath)
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 64
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        moveCenterOfContent(scrollView: carouselTable)
+        carouselTable.transformView()
+    }
+    
+    func moveCenterOfContent(scrollView: UIScrollView) {
+        let currentOffsetX = scrollView.contentOffset.x;
+        let currentOffSetY = scrollView.contentOffset.y;
+        let contentHeight = scrollView.contentSize.height;
+    
+        if (currentOffSetY < contentHeight / 8) {
+            scrollView.contentOffset = CGPoint(x: currentOffsetX, y: currentOffSetY + contentHeight/2);
+        }
+        if (currentOffSetY > contentHeight * 6 / 8) {
+            scrollView.contentOffset = CGPoint(x: currentOffsetX, y: currentOffSetY - contentHeight/2);
+        }
     }
     
     override func viewDidLayoutSubviews() {

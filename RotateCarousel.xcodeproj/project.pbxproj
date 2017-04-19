@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		730EEA041EA79BA00085C6AB /* CarouselTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 730EEA031EA79BA00085C6AB /* CarouselTableView.swift */; };
+		730EEA061EA79BDD0085C6AB /* CarouselTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 730EEA051EA79BDD0085C6AB /* CarouselTableViewCell.swift */; };
 		730FF93F1EA647E2002113B5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 730FF93E1EA647E2002113B5 /* AppDelegate.swift */; };
 		730FF9411EA647E2002113B5 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 730FF9401EA647E2002113B5 /* ViewController.swift */; };
 		730FF9441EA647E2002113B5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 730FF9421EA647E2002113B5 /* Main.storyboard */; };
@@ -34,6 +36,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		730EEA031EA79BA00085C6AB /* CarouselTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CarouselTableView.swift; sourceTree = "<group>"; };
+		730EEA051EA79BDD0085C6AB /* CarouselTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CarouselTableViewCell.swift; sourceTree = "<group>"; };
 		730FF93B1EA647E2002113B5 /* RotateCarousel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RotateCarousel.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		730FF93E1EA647E2002113B5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		730FF9401EA647E2002113B5 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -103,6 +107,8 @@
 				730FF9451EA647E2002113B5 /* Assets.xcassets */,
 				730FF9471EA647E2002113B5 /* LaunchScreen.storyboard */,
 				730FF94A1EA647E2002113B5 /* Info.plist */,
+				730EEA031EA79BA00085C6AB /* CarouselTableView.swift */,
+				730EEA051EA79BDD0085C6AB /* CarouselTableViewCell.swift */,
 			);
 			path = RotateCarousel;
 			sourceTree = "<group>";
@@ -264,6 +270,8 @@
 			files = (
 				730FF9411EA647E2002113B5 /* ViewController.swift in Sources */,
 				730FF93F1EA647E2002113B5 /* AppDelegate.swift in Sources */,
+				730EEA041EA79BA00085C6AB /* CarouselTableView.swift in Sources */,
+				730EEA061EA79BDD0085C6AB /* CarouselTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -514,6 +522,7 @@
 				730FF9651EA647E2002113B5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		730FF9661EA647E2002113B5 /* Build configuration list for PBXNativeTarget "RotateCarouselTests" */ = {
 			isa = XCConfigurationList;
@@ -522,6 +531,7 @@
 				730FF9681EA647E2002113B5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		730FF9691EA647E2002113B5 /* Build configuration list for PBXNativeTarget "RotateCarouselUITests" */ = {
 			isa = XCConfigurationList;
@@ -530,6 +540,7 @@
 				730FF96B1EA647E2002113B5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
