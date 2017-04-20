@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1F5142381EA897D80021B449 /* CarouselScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F5142371EA897D80021B449 /* CarouselScrollView.swift */; };
 		730EEA041EA79BA00085C6AB /* CarouselTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 730EEA031EA79BA00085C6AB /* CarouselTableView.swift */; };
 		730EEA061EA79BDD0085C6AB /* CarouselTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 730EEA051EA79BDD0085C6AB /* CarouselTableViewCell.swift */; };
 		730FF93F1EA647E2002113B5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 730FF93E1EA647E2002113B5 /* AppDelegate.swift */; };
@@ -36,6 +37,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1F5142371EA897D80021B449 /* CarouselScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CarouselScrollView.swift; sourceTree = "<group>"; };
 		730EEA031EA79BA00085C6AB /* CarouselTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CarouselTableView.swift; sourceTree = "<group>"; };
 		730EEA051EA79BDD0085C6AB /* CarouselTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CarouselTableViewCell.swift; sourceTree = "<group>"; };
 		730FF93B1EA647E2002113B5 /* RotateCarousel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RotateCarousel.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -109,6 +111,7 @@
 				730FF94A1EA647E2002113B5 /* Info.plist */,
 				730EEA031EA79BA00085C6AB /* CarouselTableView.swift */,
 				730EEA051EA79BDD0085C6AB /* CarouselTableViewCell.swift */,
+				1F5142371EA897D80021B449 /* CarouselScrollView.swift */,
 			);
 			path = RotateCarousel;
 			sourceTree = "<group>";
@@ -271,6 +274,7 @@
 				730FF9411EA647E2002113B5 /* ViewController.swift in Sources */,
 				730FF93F1EA647E2002113B5 /* AppDelegate.swift in Sources */,
 				730EEA041EA79BA00085C6AB /* CarouselTableView.swift in Sources */,
+				1F5142381EA897D80021B449 /* CarouselScrollView.swift in Sources */,
 				730EEA061EA79BDD0085C6AB /* CarouselTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

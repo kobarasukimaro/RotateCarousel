@@ -14,6 +14,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     let carouselView1_2 = UIView()
     let carouselView1_3 = UIView()
     let carouselTable = CarouselTableView()
+    let carouselScroll = CarouselScrollView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -69,6 +70,19 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
 //        carouselTable.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
 //        carouselTable.widthAnchor.constraint(equalToConstant: self.view.frame.width * 0.1).isActive = true
 //        carouselTable.heightAnchor.constraint(equalToConstant: self.view.frame.height * 0.3).isActive = true
+        
+        carouselScroll.delegate = self
+        // carouselTable.translatesAutoresizingMaskIntoConstraints = false
+        carouselScroll.tag = 3001
+        carouselScroll.frame = CGRect(x: self.view.frame.maxX / 2 - 125, y: self.view.frame.maxY / 1.5, width: 250, height: self.view.frame.height * 0.1)
+        carouselScroll.backgroundColor = UIColor.black
+        // carouselScroll.isPagingEnabled = true
+        self.view.addSubview(carouselScroll)
+        //        carouselTable.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        //        carouselTable.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
+        //        carouselTable.widthAnchor.constraint(equalToConstant: self.view.frame.width * 0.1).isActive = true
+        //        carouselTable.heightAnchor.constraint(equalToConstant: self.view.frame.height * 0.3).isActive = true
+        
     }
     
 
@@ -120,9 +134,61 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        moveCenterOfContent(scrollView: carouselTable)
-        carouselTable.transformView()
-        carouselTable.layoutIfNeeded()
+        switch scrollView.tag {
+        case 2001:
+            moveCenterOfContent(scrollView: carouselTable)
+            carouselTable.transformView()
+            carouselTable.layoutIfNeeded()
+        case 3001:
+            moveCenterOfContent2(scrollView: scrollView)
+            print("scroll")
+            print("content offset = " + String(describing: scrollView.contentOffset))
+            for view in scrollView.subviews {
+                var show = false
+                var rate = 0.0
+                let minX = view.frame.minX
+                let maxX = view.frame.maxX
+                if(scrollView.contentOffset.x < minX && minX < (scrollView.contentOffset.x + scrollView.frame.width)){
+                    show = true
+                }else if(scrollView.contentOffset.x < maxX && maxX < (scrollView.contentOffset.x + scrollView.frame.width)){
+                    show = true
+                }
+                
+                if(show){
+                    rate = Double(view.center.x - scrollView.contentOffset.x - (scrollView.frame.width / 2)) / Double(scrollView.frame.width / 2)
+
+                    var t: CATransform3D = CATransform3DIdentity
+                    t.m34 = 1.0 / -800
+                    var tilt = (rate * rate) * 90.0
+                    if(rate < 0){
+                        tilt = tilt * -1
+                    }
+                    
+                    t = CATransform3DRotate(t,
+                                            CGFloat(tilt * Double.pi / 180.0),
+                                            0,
+                                            1,
+                                            0)
+                    
+                    let scale = (rate * rate) * 0.3
+                    
+                    t = CATransform3DScale(t,
+                        CGFloat(1.0 - scale),
+                        CGFloat(1.0 - scale),
+                        CGFloat(1.0 - scale))
+                    
+                    view.layer.transform = t
+                    print("tag " + String(view.tag) + ", x = " + String(describing: view.frame.origin.x) + ", show = " + String(show) + ", rate = " + String(rate) + ", tilt = " + String(tilt))
+                }else{
+                                   print("tag " + String(view.tag) + ", x = " + String(describing: view.frame.origin.x) + ", show = " + String(show) + ", rate = " + String(rate))
+                }
+                
+
+            }
+        default:
+            break
+        }
+
     }
     
     func moveCenterOfContent(scrollView: UIScrollView) {
@@ -135,6 +201,21 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
         if (currentOffSetY > contentHeight * 6 / 8) {
             scrollView.contentOffset = CGPoint(x: currentOffsetX, y: currentOffSetY - contentHeight/2);
+        }
+    }
+    
+    
+    
+    func moveCenterOfContent2(scrollView: UIScrollView) {
+        let currentOffsetX = scrollView.contentOffset.x;
+        let contentWidth = scrollView.contentSize.width;
+        
+        if (currentOffsetX < 175) {
+            scrollView.contentOffset = CGPoint(x: 775, y: 0)
+        }
+        if (currentOffsetX > 775) {
+            
+            scrollView.contentOffset = CGPoint(x: 175, y: 0)
         }
     }
     
@@ -217,6 +298,64 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         
         carouselTable.contentOffset = carouselTable.defaultContentOffset()
+        
+        
+        var baseTag = 5000
+        for i in 0..<12 {
+            baseTag = baseTag + 1
+            
+            let uiview = UILabel()
+            // 1 = 100 - 75
+            // 2 = 200 - 175
+            // 3 = 300 - 275
+            // 4 = 400 - 375
+            // 5 = 500 - 475
+            uiview.frame = CGRect(x: (i + 1) * 100 - (50 / 2), y: 0, width: 50, height: 50)
+            uiview.text = String(i + 1)
+            uiview.isHidden = false
+            uiview.tag = baseTag
+            if(i == 0 || i == 3 || i == 6 || i == 9){
+                uiview.backgroundColor = UIColor.green
+            }else if(i == 1 || i == 4 || i == 7 || i == 10){
+                uiview.backgroundColor = UIColor.yellow
+            }else{
+                uiview.backgroundColor = UIColor.cyan
+            }
+            uiview.layer.cornerRadius = 15.0
+            uiview.clipsToBounds = true
+            // carouselView1_1.layer.anchorPoint = CGPoint(x: 1.5, y: 0.5)
+            carouselScroll.addSubview(uiview)
+        }
+        
+//        let uiview1 = UIView()
+//        uiview1.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
+//        uiview1.isHidden = false
+//        uiview1.tag = 5001
+//        uiview1.backgroundColor = UIColor.green
+//        uiview1.layer.cornerRadius = 15.0
+//        // carouselView1_1.layer.anchorPoint = CGPoint(x: 1.5, y: 0.5)
+//        carouselScroll.addSubview(uiview1)
+//        
+//        let uiview2 = UIView()
+//        uiview2.frame = CGRect(x: 50, y: 0, width: 50, height: 50)
+//        uiview2.isHidden = false
+//        uiview2.tag = 5002
+//        uiview2.backgroundColor = UIColor.yellow
+//        uiview2.layer.cornerRadius = 15.0
+//        // carouselView1_1.layer.anchorPoint = CGPoint(x: 1.5, y: 0.5)
+//        carouselScroll.addSubview(uiview2)
+//        
+//        let uiview3 = UIView()
+//        uiview3.frame = CGRect(x: 100, y: 0, width: 50, height: 50)
+//        uiview3.isHidden = false
+//        uiview3.tag = 5003
+//        uiview3.backgroundColor = UIColor.cyan
+//        uiview3.layer.cornerRadius = 15.0
+//        // carouselView1_1.layer.anchorPoint = CGPoint(x: 1.5, y: 0.5)
+//        carouselScroll.addSubview(uiview3)
+        
+        carouselScroll.contentSize = CGSize(width: 1200, height: carouselScroll.frame.height)
+        carouselScroll.contentOffset = CGPoint(x: 600 - 125, y: 0)
     }
 
     override func didReceiveMemoryWarning() {
