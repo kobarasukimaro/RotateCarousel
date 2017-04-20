@@ -12,6 +12,7 @@ class ViewController: UIViewController {
 
     let carouselView1_1 = UIView()
     let carouselView1_2 = UIView()
+    let carouselView1_3 = UIView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,12 +41,26 @@ class ViewController: UIViewController {
         carouselView1_2.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
         carouselView1_2.widthAnchor.constraint(equalToConstant: self.view.frame.width * 0.2).isActive = true
         carouselView1_2.heightAnchor.constraint(equalToConstant: self.view.frame.height * 0.1).isActive = true
+        
+        carouselView1_3.translatesAutoresizingMaskIntoConstraints = false
+        carouselView1_3.isHidden = false
+        carouselView1_3.tag = 1002
+        carouselView1_3.backgroundColor = UIColor.gray
+        carouselView1_3.layer.cornerRadius = 15.0
+        // carouselView1_1.layer.anchorPoint = CGPoint(x: 1.5, y: 0.5)
+        self.view.addSubview(carouselView1_3)
+        carouselView1_3.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        carouselView1_3.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
+        carouselView1_3.widthAnchor.constraint(equalToConstant: self.view.frame.width * 0.2).isActive = true
+        carouselView1_3.heightAnchor.constraint(equalToConstant: self.view.frame.height * 0.1).isActive = true
     }
+    
+    let maxMove = 200.0
+    let minSize = 0.5
     
     override func viewDidLayoutSubviews() {
 
         
-        let maxMove = 300.0
         var move = 0.0
         let tileMod = carouselTilt2.truncatingRemainder(dividingBy: 90.0)
         let moveRect = (carouselTilt2 / 90) + (tileMod > 0 ? 1 : 0)
@@ -62,7 +77,7 @@ class ViewController: UIViewController {
             move = move * -1
         }
         
-        let minSize = 0.5
+        
         var size = 0.0
         let shrinkMod = carouselTilt2.truncatingRemainder(dividingBy: 180.0)
         let shrinkRect = (carouselTilt2 / 180) + (shrinkMod > 0 ? 1 : 0)
@@ -82,6 +97,40 @@ class ViewController: UIViewController {
         transform = CATransform3DRotate(transform, CGFloat(carouselTilt2 * Double.pi / 180.0), 0, 1, 0.0)
         carouselView1_2.layer.transform = transform
         carouselView1_2.center.x = self.view.center.x + CGFloat(move)
+        
+        var move3 = 0.0
+        let tileMod3 = carouselTilt3.truncatingRemainder(dividingBy: 90.0)
+        let moveRect3 = (carouselTilt3 / 90) + (tileMod3 > 0 ? 1 : 0)
+        // 奇数の場合はmaxに向かって増える
+        if(moveRect3.truncatingRemainder(dividingBy: 2) >= 1){
+            let tiltRatio = tileMod3 == 0 ? 90.0 : tileMod3
+            move3 = maxMove * (tiltRatio / 90.0)
+        }else{
+            let tiltRatio = tileMod3 == 0 ? 90.0 : tileMod3
+            move3 = maxMove - (maxMove * (tiltRatio / 90.0))
+        }
+        
+        if(carouselTilt3 >= 180){
+            move3 = move3 * -1
+        }
+        
+        var size3 = 0.0
+        let shrinkMod3 = carouselTilt3.truncatingRemainder(dividingBy: 180.0)
+        let shrinkRect3 = (carouselTilt3 / 180) + (shrinkMod3 > 0 ? 1 : 0)
+        // 奇数の場合はmaxに向かって増える
+        if(shrinkRect3.truncatingRemainder(dividingBy: 2) >= 1){
+            let shrinkRatio = shrinkMod3 == 0 ? 180.0 : shrinkMod3
+            size3 = minSize * (shrinkRatio / 180.0)
+        }else{
+            let shrinkRatio = shrinkMod3 == 0 ? 180.0 : shrinkMod3
+            size3 = minSize - (minSize * (shrinkRatio / 180.0))
+        }
+        
+        var transform3: CATransform3D = CATransform3DMakeScale(CGFloat(Double(1.0 - size3)), CGFloat(Double(1.0 - size3)), CGFloat(Double(1.0 - size3)))
+        transform3.m34 = 1.0 / -500;
+        transform3 = CATransform3DRotate(transform3, CGFloat(carouselTilt3 * Double.pi / 180.0), 0, 1, 0.0)
+        carouselView1_3.layer.transform = transform3
+        carouselView1_3.center.x = self.view.center.x + CGFloat(move3)
     }
 
     override func didReceiveMemoryWarning() {
@@ -91,6 +140,7 @@ class ViewController: UIViewController {
 
     var carouselTilt = 0.0
     var carouselTilt2 = 45.0
+    var carouselTilt3 = 315.0
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesMoved(touches, with: event)
@@ -101,7 +151,6 @@ class ViewController: UIViewController {
             let tag : Int = (touch.view?.tag)!
             switch tag {
             case 1000:
-            
                 
                 // 移動した先の座標を取得
                 let location = touch.location(in: self.view)
@@ -112,7 +161,7 @@ class ViewController: UIViewController {
                     if(carouselTilt >= 360){
                         carouselTilt = 0.0
                     }
-                    let maxMove = 300.0
+ 
                     var move = 0.0
                     let tileMod = carouselTilt.truncatingRemainder(dividingBy: 90.0)
                     let moveRect = (carouselTilt / 90) + (tileMod > 0 ? 1 : 0)
@@ -129,7 +178,6 @@ class ViewController: UIViewController {
                         move = move * -1
                     }
                     
-                    let minSize = 0.8
                     var size = 0.0
                     let shrinkMod = carouselTilt.truncatingRemainder(dividingBy: 180.0)
                     let shrinkRect = (carouselTilt / 180) + (shrinkMod > 0 ? 1 : 0)
@@ -185,11 +233,52 @@ class ViewController: UIViewController {
                     
                     print("size2 = " + String(size2))
                     
-                    var transform2: CATransform3D = CATransform3DMakeScale(CGFloat(Double(1.0 - size2)), CGFloat(Double(1.0 - size2)), CGFloat(Double(1.0 - size)))
+                    var transform2: CATransform3D = CATransform3DMakeScale(CGFloat(Double(1.0 - size2)), CGFloat(Double(1.0 - size2)), CGFloat(Double(1.0 - size2)))
                     transform2.m34 = 1.0 / -500;
                     transform2 = CATransform3DRotate(transform2, CGFloat(carouselTilt2 * Double.pi / 180.0), 0, 1, 0.0)
                     carouselView1_2.layer.transform = transform2
                     carouselView1_2.center.x = self.view.center.x + CGFloat(move2)
+                    
+                    carouselTilt3 = carouselTilt3 + 6.0
+                    if(carouselTilt3 >= 360){
+                        carouselTilt3 = 0.0
+                    }
+                    
+                    var move3 = 0.0
+                    let tileMod3 = carouselTilt3.truncatingRemainder(dividingBy: 90.0)
+                    let moveRect3 = (carouselTilt3 / 90) + (tileMod3 > 0 ? 1 : 0)
+                    // 奇数の場合はmaxに向かって増える
+                    if(moveRect3.truncatingRemainder(dividingBy: 2) >= 1){
+                        let tiltRatio = tileMod3 == 0 ? 90.0 : tileMod3
+                        move3 = maxMove * (tiltRatio / 90.0)
+                    }else{
+                        let tiltRatio = tileMod3 == 0 ? 90.0 : tileMod3
+                        move3 = maxMove - (maxMove * (tiltRatio / 90.0))
+                    }
+                    
+                    if(carouselTilt3 >= 180){
+                        move3 = move3 * -1
+                    }
+                    
+                    var size3 = 0.0
+                    let shrinkMod3 = carouselTilt3.truncatingRemainder(dividingBy: 180.0)
+                    let shrinkRect3 = (carouselTilt3 / 180) + (shrinkMod3 > 0 ? 1 : 0)
+                    // 奇数の場合はmaxに向かって増える
+                    if(shrinkRect3.truncatingRemainder(dividingBy: 2) >= 1){
+                        let shrinkRatio = shrinkMod3 == 0 ? 180.0 : shrinkMod3
+                        size3 = minSize * (shrinkRatio / 180.0)
+                    }else{
+                        let shrinkRatio = shrinkMod3 == 0 ? 180.0 : shrinkMod3
+                        size3 = minSize - (minSize * (shrinkRatio / 180.0))
+                    }
+                    
+                    print("size3 = " + String(size3))
+                    
+                    var transform3: CATransform3D = CATransform3DMakeScale(CGFloat(Double(1.0 - size3)), CGFloat(Double(1.0 - size3)), CGFloat(Double(1.0 - size3)))
+                    transform3.m34 = 1.0 / -500;
+                    transform3 = CATransform3DRotate(transform3, CGFloat(carouselTilt3 * Double.pi / 180.0), 0, 1, 0.0)
+                    carouselView1_3.layer.transform = transform3
+                    carouselView1_3.center.x = self.view.center.x + CGFloat(move3)
                 }
 
                 
